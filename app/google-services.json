@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "399116273221",
+    "firebase_url": "https://boton-panico-aa49f.firebaseio.com",
+    "project_id": "boton-panico-aa49f",
+    "storage_bucket": "boton-panico-aa49f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399116273221:android:52f6c18058e60a437c052c",
+        "android_client_info": {
+          "package_name": "com.c5durango.alertalsm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399116273221-57g7ot0so3ur9eiv3vhhfivssvv19uo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN6d3rIYHoo9WvaOFv9I6IVCqs8VVtuT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399116273221-57g7ot0so3ur9eiv3vhhfivssvv19uo9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
