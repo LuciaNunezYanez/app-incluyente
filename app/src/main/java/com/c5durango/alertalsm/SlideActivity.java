@@ -6,9 +6,8 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.c5durango.alertalsm.Clases.SlideViewPagerAdapter;
+import com.c5durango.alertalsm.Adaptadores.SlideViewPagerAdapter;
 
 public class SlideActivity extends AppCompatActivity {
 

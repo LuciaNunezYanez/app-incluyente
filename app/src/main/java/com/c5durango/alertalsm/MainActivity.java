@@ -13,9 +13,12 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -85,9 +88,6 @@ public class MainActivity extends AppCompatActivity implements InicioFragment.Da
     static String FECHA_FRONTAL = "";
     static String FECHA_TRASERA = "";
 
-    static boolean ENVIO_AUDIO = false;
-    static boolean ENVIO_FRONTAL = false;
-    static boolean ENVIO_TRASERA = false;
     static boolean ESCUCHADOR_GPS = false;
 
     @Override
@@ -119,14 +119,17 @@ public class MainActivity extends AppCompatActivity implements InicioFragment.Da
 
         contador = 0;
         contextoGlobal = new WeakReference<>(getApplicationContext());
-        if(!ESCUCHADOR_GPS)
-            registrarEscuchadorGPS(contextoGlobal.get());
+        // TODO: DESCOMENTAR CUANDO SEA VISIBLE EL BOTÓN DE PÁNICO
+        /*if(!ESCUCHADOR_GPS)
+            registrarEscuchadorGPS(contextoGlobal.get());*/
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
         // MENU BAR
+        // R.id.nav_config,
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_inicio, R.id.nav_config,
+                R.id.nav_inicio, R.id.nav_reportes, R.id.nav_perfil,
                 R.id.nav_permisos, R.id.nav_info)
                 .setDrawerLayout(drawer)
                 .build();
@@ -173,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements InicioFragment.Da
             Log.d(TAG, "Si se puede enviar.. " + contador + " -- " + puedeEnviar);
             //mostrarResultadoVista();
             // Tomar ubicación y al volver generar alerta.
-            Dialogs.abrirVentanaMensaje(MainActivity.this, "Enviando reporte", "Espere un momento", R.drawable.ic_color_info, View.VISIBLE, View.GONE, false);
+            Dialogs.abrirVentanaMensaje(MainActivity.this, "Enviando alerta", "Espere un momento", R.drawable.ic_color_info, View.VISIBLE, View.GONE, false);
             PreferencesReporte.guardarReporteInicializado(getApplicationContext());
             if(ActivityCompat.checkSelfPermission(contextoGlobal.get(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 if(!ESCUCHADOR_GPS)
@@ -277,7 +280,10 @@ public class MainActivity extends AppCompatActivity implements InicioFragment.Da
                                             // Invertí la condición y meti comenzar
                                             // terminarGrabacionAudio();
                                             // Thread.sleep(3000);
+                                            Log.d(TAG, "Comenzaré a grabar audio");
                                             comenzarGrabacionAudio(context);
+                                        } else {
+                                            Log.d(TAG, "No puedo grabar por que el servicio se está ejecutando");
                                         }
 
                                     }
@@ -349,11 +355,10 @@ public class MainActivity extends AppCompatActivity implements InicioFragment.Da
             intentFrontal.putExtra("reporteCreado", reporteCreado);
             intentFrontal.putExtra("tipoCamara", "frontal");
             intentFrontal.putExtra("receiver", resultFReceiver);
-            if(!ENVIO_FRONTAL){
-                ENVIO_FRONTAL = true;
-                context.startService(intentFrontal);
-            }
 
+
+            Log.d(TAG, "INICIAR PROCESO CAMARA FRONTAL");
+            context.startService(intentFrontal);
 
         } else if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             // INICIAR PROCESO CAMARA TRAERA
@@ -362,10 +367,10 @@ public class MainActivity extends AppCompatActivity implements InicioFragment.Da
             intentTrasera.putExtra("reporteCreado", reporteCreado);
             intentTrasera.putExtra("tipoCamara", "trasera");
             intentTrasera.putExtra("receiver", resultTReceiver);
-            if(!ENVIO_TRASERA){
-                ENVIO_TRASERA = true;
-                context.startService(intentTrasera);
-            }
+
+
+            Log.d(TAG, "INICIAR PROCESO CAMARA TRASERA");
+            context.startService(intentTrasera);
         } else {
             if(procesoImagenFrontal){
                 Boolean res = EnviarImagenes.enviarImagenFrontal(contextoGlobal.get(), IMAGEN_FRONTAL, FECHA_FRONTAL, reporteCreado);
@@ -457,10 +462,8 @@ public class MainActivity extends AppCompatActivity implements InicioFragment.Da
         intent.putExtra("padre", "in");
         intent.putExtra("reporteCreado", reporteCreado);
         intent.putExtra("soloUno", true);
-        if(!ENVIO_AUDIO){
-            ENVIO_AUDIO = true;
-            context.startService(intent);
-        }
+
+        context.startService(intent);
     }
 
 
@@ -525,10 +528,9 @@ public class MainActivity extends AppCompatActivity implements InicioFragment.Da
                         intentTrasera.putExtra("reporteCreado", reporteCreado);
                         intentTrasera.putExtra("tipoCamara", "trasera");
                         intentTrasera.putExtra("receiver", resultTReceiver);
-                        if(!ENVIO_TRASERA){
-                            ENVIO_TRASERA = true;
-                            contextoGlobal.get().startService(intentTrasera);
-                        }
+
+                        contextoGlobal.get().startService(intentTrasera);
+                        Log.d(TAG, "SE ENVIARON LAS FOTOGRAFIAS");
 
                     } else {
                         if(procesoImagenFrontal){

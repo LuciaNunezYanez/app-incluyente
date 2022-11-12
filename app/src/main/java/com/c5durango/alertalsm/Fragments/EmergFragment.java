@@ -129,7 +129,7 @@ public class EmergFragment extends Fragment implements CardView.OnClickListener{
 
 
     // TAGS
-    String tituloBombero = "BOMBERO";
+    String tituloBombero = "PROTECCIÓN CIVIL";
     String tituloMedico = "MEDICO";
     String tituloSeguridad = "SEGURIDAD";
     String tituloOtro = "OTRO";

@@ -95,7 +95,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         LatLng durango = new LatLng(modeloUbicacion.getLatitud(), modeloUbicacion.getLongitud());
         marker = new MarkerOptions();
         marker.position(durango);
-        marker.title("Lugar emergencia");
+        marker.title("Lugar del incidente");
         marker.draggable(true);
 
         mMap.addMarker(marker);
@@ -117,7 +117,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 mMap.clear();
 
                 marker.position(new LatLng(modeloUbicacion.getLatitud(), modeloUbicacion.getLongitud()));
-                marker.title("¡Aquí es la emergencia!");
+                marker.title("¡Aquí es mi emergencia!");
                 marker.draggable(true);
                 mMap.addMarker(marker);
 

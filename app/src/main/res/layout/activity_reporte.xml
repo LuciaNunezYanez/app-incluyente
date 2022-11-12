@@ -41,18 +41,79 @@
         <ImageButton
             android:id="@+id/btnAtras"
             android:layout_width="50dp"
-            android:layout_height="60dp"
+            android:layout_height="70dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_bg_rojo"
+            android:backgroundTint="@color/colorRojoClaro"
             android:onClick="atras"
+            android:paddingVertical="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_atras"
+            android:src="@drawable/ic_atras_2"
             android:text="Atras"
             android:textColor="@android:color/white" />
 
-        <ImageButton
+        <!-- BOTÓN PARA FINALIZAR EL RPEORTE -->
+        <LinearLayout
+            android:id="@+id/btnEnviarReporte"
+            android:layout_width="66dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:onClick="onFinish"
+            android:background="@drawable/btn_bg_verde">
+
+            <ImageView
+                android:layout_margin="3dp"
+                android:id="@+id/image"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_width="66dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_check"/>
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/image"
+                android:fontFamily="sans-serif-smallcaps"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Enviar reporte"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="#FFF"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnReportePendiente"
+            android:layout_width="66dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="#9C9C9C">
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/image"
+                android:fontFamily="sans-serif-smallcaps"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Tiene 1\nreporte\nen curso"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="#FFF"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <!--<ImageButton
             android:id="@+id/btnEnviarReporte"
             android:layout_width="66dp"
             android:layout_height="80dp"
@@ -62,19 +123,20 @@
             android:background="@drawable/btn_bg_verde"
             android:onClick="onFinish"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_check" />
+            android:src="@drawable/ic_check" />-->
 
         <ImageButton
             android:id="@+id/btnAdelante"
             android:layout_width="50dp"
-            android:layout_height="60dp"
+            android:layout_height="70dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_bg_azul"
+            android:backgroundTint="@color/colorAzulCGob"
             android:onClick="adelante"
+            android:paddingVertical="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_adelante"
+            android:src="@drawable/ic_adelante_2"
             android:text="Continuar"
             android:textColor="@android:color/white" />
     </LinearLayout>
@@ -130,6 +192,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="volverHome"
+        android:padding="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_home_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.001" />
 
     <!--
     <LinearLayout
@@ -347,7 +425,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Seleccione tipo emergencia"
+                android:text="Seleccione tipo de incidente"
                 android:textColor="#272727"
                 android:textSize="15sp" />
 

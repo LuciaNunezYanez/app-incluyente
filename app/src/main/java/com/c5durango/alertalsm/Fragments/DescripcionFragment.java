@@ -29,7 +29,7 @@ public class DescripcionFragment extends Fragment {
     private EditText txtDescripcion;
     private String TAG = "DescripFragm";
     private TextView txtLongitud;
-    private int MAX_LONGITUD = 500;
+    private int MAX_LONGITUD = 1500;
     private int LONGITUD_ACTUAL = 0;
     DataListener callback;
 

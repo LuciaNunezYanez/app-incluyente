@@ -2,9 +2,16 @@ package com.c5durango.alertalsm;
 
 public class Constantes {
 
+    /*
+    * Te pido una disculpa si te tocó modificar este código
+    * ya que a veces ni yo misma le entiendo :(
+    * Si tienes dudas mandame un correo y te apoyo
+    * lucia.nunez0828@gmail.com
+    */
+
     // CONSTANTES GENERALES
     public static final String CHANNEL_ID = "911_INCLUYENTE_DGO";
-    public static String NOMBRE_APP = "911 Incluyente Dgo";
+    public static String NOMBRE_APP = "9-1-1 Incluyente Dgo";
     public static final int PRIORITY_MAX = 2;
     public static final int ID_SERVICIO_PANICO = 100;
     public static final int ID_SERVICIO_AUDIO = 102;
@@ -40,6 +47,8 @@ public class Constantes {
     public static final int DIFERENCIA_ENTRE_REPORTES = 60000; //  60,000 = 1 minuto (600000) = 10Min // 3600000 = 1 hr
     public static final int LAPSO_PARA_CANCELAR_REPORTE = 90000; // 60,000 = 1 minuto
 
+    public static final String LUGAR_ACTUAL = "Actual", LUGAR_CASA = "Casa", LUGAR_GOOGLE = "Otra";
+
     /* VIDEO */
     public static final long MAX_VIDEO_5MB  = 5242880L;
     public static final long MAX_VIDEO_10MB = 10485760L;
@@ -59,6 +68,6 @@ public class Constantes {
 
     // URL
     public static String URL = "http://10.11.127.70:8888"; // LOCAL
-    // public static String URL = "http://189.254.158.196:8888";    // IP PUBLICA
+    //public static String URL = "http://189.254.158.196:8888";    // IP PUBLICA
     // public static String URL = "http://10.11.118.91:8888";    // IP PRIVADA
 }

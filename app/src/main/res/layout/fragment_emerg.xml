@@ -29,7 +29,7 @@
                 android:foregroundGravity="center"
                 android:gravity="center"
                 android:paddingTop="10dp"
-                android:text="Tipo de\nemergencia"
+                android:text="Tipo de\nincidente"
                 android:textColor="@android:color/white"
                 android:textSize="40sp" />
 
@@ -87,7 +87,7 @@
                                 android:gravity="center"
                                 android:text="Protección civil"
                                 android:textColor="#045F9C"
-                                android:textSize="25sp"
+                                android:textSize="22sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -219,7 +219,7 @@
                 android:paddingRight="15dp"
                 android:paddingBottom="5dp">
 
-                <TextView
+                <!--TextView
                     android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -227,9 +227,9 @@
                     android:layout_weight="1"
                     android:fontFamily="sans-serif-black"
                     android:gravity="center"
-                    android:text="Seleccione tipo de emergencia"
+                    android:text="Seleccione tipo de incidente"
                     android:textColor="#272727"
-                    android:textSize="16sp" />
+                    android:textSize="16sp" /-->
 
                 <Spinner
                     android:id="@+id/spinnerTipoEmergencia"

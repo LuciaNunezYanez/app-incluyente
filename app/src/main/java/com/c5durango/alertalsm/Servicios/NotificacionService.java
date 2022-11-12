@@ -514,7 +514,7 @@ public class NotificacionService extends Service {
                             .setContentIntent(pendingIntent)
                             .build();
             // Crear Canal de notificaciones
-            String descripcion = "El uso de este servicio le permite detectar cuando se presiona tres veces el botón de bloqueo y genera la alerta de pánico"; //
+            String descripcion = "El uso de este servicio le permite detectar cuando se presiona tres veces el botón de bloqueo y así generar una alerta de pánico."; //
             int importancia = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, Constantes.NOMBRE_APP, importancia);
             notificationChannel.setDescription(descripcion);

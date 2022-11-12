@@ -70,7 +70,7 @@ public class Utilidades {
 
     public static String tipoErrorVolley(VolleyError error){
         if (error instanceof TimeoutError) {
-            return "Fallo de servidor";
+            return "Falló la comunicación con el servidor";
         } else if (error instanceof NoConnectionError) {
             return "Sin conexión";
         } else if (error instanceof AuthFailureError) {
@@ -78,7 +78,7 @@ public class Utilidades {
         } else if (error instanceof ServerError) {
             return "El servidor no responde";
         } else if (error instanceof NetworkError) {
-            return "Error de Red";
+            return "Error de red";
         } else if (error instanceof ParseError) {
             return "Error de parseo";
         } else {

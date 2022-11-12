@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.c5durango.alertalsm.Clases.ModeloUbicacion;
+import com.c5durango.alertalsm.Constantes;
 import com.c5durango.alertalsm.Dialogs.Dialogs;
 import com.c5durango.alertalsm.R;
 import com.c5durango.alertalsm.Servicios.GPSService;
@@ -34,8 +35,7 @@ public class UbicacionFragment extends Fragment implements View.OnClickListener{
     private CardView cardCasa;
     private CardView cardGoogleMaps;
 
-    private String LUGAR_ACTUAL = "Actual", LUGAR_CASA = "Casa", LUGAR_GOOGLE = "Otra";
-    ModeloUbicacion modeloUbicacion = new ModeloUbicacion("Actual", Utilidades.obtenerFecha(), 0.0, 0.0);
+    ModeloUbicacion modeloUbicacion = new ModeloUbicacion(Constantes.LUGAR_ACTUAL, Utilidades.obtenerFecha(), 0.0, 0.0);
 
     public UbicacionFragment() {
         // Required empty public constructor
@@ -97,20 +97,20 @@ public class UbicacionFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case (R.id.cardUbicacionActual):
-                modeloUbicacion.setLugar(LUGAR_ACTUAL);
+                modeloUbicacion.setLugar(Constantes.LUGAR_ACTUAL);
                 modeloUbicacion.setFechaHora(Utilidades.obtenerFecha());
                 modeloUbicacion.setLongitud(0.0);
                 modeloUbicacion.setLatitud(0.0);
                 callback.sendUbicacion(modeloUbicacion.getLugar(), modeloUbicacion.getFechaHora(), modeloUbicacion.getLatitud(), modeloUbicacion.getLongitud());
-                dibujarCardUbicacion(LUGAR_ACTUAL);
+                dibujarCardUbicacion(Constantes.LUGAR_ACTUAL);
                 break;
             case (R.id.cardEnCasa):
-                modeloUbicacion.setLugar(LUGAR_CASA);
+                modeloUbicacion.setLugar(Constantes.LUGAR_CASA);
                 modeloUbicacion.setFechaHora(Utilidades.obtenerFecha());
                 modeloUbicacion.setLongitud(0.0);
                 modeloUbicacion.setLatitud(0.0);
                 callback.sendUbicacion(modeloUbicacion.getLugar(), modeloUbicacion.getFechaHora(), modeloUbicacion.getLatitud(), modeloUbicacion.getLongitud());
-                dibujarCardUbicacion(LUGAR_CASA);
+                dibujarCardUbicacion(Constantes.LUGAR_CASA);
                 break;
             case (R.id.cardGoogleMaps):
                 callback.abrirMaps();
@@ -119,23 +119,23 @@ public class UbicacionFragment extends Fragment implements View.OnClickListener{
                 modeloUbicacion.setLongitud(0.0);
                 modeloUbicacion.setLatitud(0.0);
                 callback.sendUbicacion(modeloUbicacion.getLugar(), modeloUbicacion.getFechaHora(), modeloUbicacion.getLatitud(), modeloUbicacion.getLongitud());*/
-                dibujarCardUbicacion(LUGAR_GOOGLE);
+                dibujarCardUbicacion(Constantes.LUGAR_GOOGLE);
                 break;
         }
     }
 
     private void dibujarCardUbicacion(String lugar){
-        if(lugar.equals(LUGAR_ACTUAL)){
+        if(lugar.equals(Constantes.LUGAR_ACTUAL)){
             cardUbicacionActual.setBackgroundColor(getResources().getColor(R.color.grisClaro));
             cardCasa.setBackgroundColor(Color.WHITE);
             cardGoogleMaps.setBackgroundColor(Color.WHITE);
         }
-        if(lugar.equals(LUGAR_CASA)){
+        if(lugar.equals(Constantes.LUGAR_CASA)){
             cardUbicacionActual.setBackgroundColor(Color.WHITE);
             cardCasa.setBackgroundColor(getResources().getColor(R.color.grisClaro));
             cardGoogleMaps.setBackgroundColor(Color.WHITE);
         }
-        if(lugar.equals(LUGAR_GOOGLE)){
+        if(lugar.equals(Constantes.LUGAR_GOOGLE)){
             cardUbicacionActual.setBackgroundColor(Color.WHITE);
             cardCasa.setBackgroundColor(Color.WHITE);
             cardGoogleMaps.setBackgroundColor(getResources().getColor(R.color.grisClaro));

@@ -58,6 +58,7 @@ public class Dialogs {
     public static void cerrarVentanaMensaje(){
         if (dialogMessage != null){
             dialogMessage.dismiss();
+            dialogMessage = null;
         }
     }
 

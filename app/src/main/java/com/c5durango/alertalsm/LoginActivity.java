@@ -65,12 +65,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-
-
-
-
-
-
     private void iniciarSesion(){
         CODIGO_ACTIVACION = txtCodigoActivacion.getText().toString().toUpperCase();
         if(CODIGO_ACTIVACION.length() <= 0 ){

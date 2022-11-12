@@ -58,6 +58,7 @@
                 android:alignmentMode="alignMargins"
                 android:columnCount="2"
                 android:columnOrderPreserved="false"
+                android:paddingBottom="5dp"
                 android:rowCount="3"
                 android:visibility="visible">
 
@@ -229,7 +230,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="8dp">
 
@@ -269,7 +270,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="8dp">
 

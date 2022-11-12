@@ -408,6 +408,10 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
         btnCancelarAudio = recordView.findViewById(R.id.btnCancelarRecords);
         btnAceptarAudio = recordView.findViewById(R.id.btnAceptarRecords);
         btnIniciarAudio = recordView.findViewById(R.id.btnGrabarRecords);
+
+        btnIniciarAudio.setVisibility(View.VISIBLE);
+        btnAceptarAudio.setVisibility(View.GONE);
+
         controlesGrabacionAudio(true, false, true);
 
         dialogBuilder.setView(recordView);
@@ -420,6 +424,8 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View v) {
                 try {
+                    btnIniciarAudio.setVisibility(View.GONE);
+                    btnAceptarAudio.setVisibility(View.VISIBLE);
                     comenzarGrabarAudio();
                 } catch (IOException e) {
                     Toast.makeText(getContext(), "Error al grabar audio", Toast.LENGTH_LONG).show();
@@ -430,8 +436,11 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
         btnAceptarAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mediaRecorder != null)
+                if (mediaRecorder != null) {
+                    btnIniciarAudio.setVisibility(View.VISIBLE);
+                    btnAceptarAudio.setVisibility(View.GONE);
                     detenerGrabacionAudio(true);
+                }
                 dialog.dismiss();
             }
         });
@@ -463,7 +472,7 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
             if (requestCode > 30) {
                 if (requestCode == REQUEST_IMAGE_CAPTURE) {          // CAPTURA DE FOOGRAFIA
                     try {
-                        if (data != null) {
+                        if (data != null && data.getData() != null) {
                             arrayImagenURI.add(data.getData());
                             modelMultimedia.setArrayImagenURI(arrayImagenURI);
                             calcularArchivosAdjuntos();
@@ -482,7 +491,7 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
                     }
                 } else if (requestCode == REQUEST_VIDEO_CAPTURE) {   // CAPTURA DE VIDEO
                     try {
-                        if (data != null) {
+                        if (data != null && data.getData() != null) {
                             arrayVideoURI.add(data.getData());
                             modelMultimedia.setArrayVideoURI(arrayVideoURI);
                             calcularArchivosAdjuntos();

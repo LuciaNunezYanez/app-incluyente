@@ -3,7 +3,40 @@ package com.c5durango.alertalsm.Utilidades;
 import android.content.Context;
 import android.util.Log;
 
+import com.c5durango.alertalsm.Clases.ModeloLogin;
+
 public class PreferencesUsuario {
+
+    private static String PREFERENCES_USUARIO = "Usuario";
+    private static String PREFERENCES_LOGIN = "Login";
+    private static String PREFERENCES_COMERCIO = "Comercio";
+    private static String PREFERENCES_COMERCIO_DIRECCION = "ComercioDireccion";
+
+    public static ModeloLogin getDatosComercioUsuario(Context context){
+        ModeloLogin data = new ModeloLogin();
+
+        android.content.SharedPreferences preferencesUsuario = context.getSharedPreferences(PREFERENCES_USUARIO, Context.MODE_PRIVATE);
+        android.content.SharedPreferences preferencesDireccion = context.getSharedPreferences(PREFERENCES_COMERCIO_DIRECCION, Context.MODE_PRIVATE);
+
+
+        if (preferencesUsuario.contains("id_usuarios_app")){
+            data.setId_usuarios_app(preferencesUsuario.getInt("id_usuarios_app",0));
+            data.setNombres_usuarios_app(preferencesUsuario.getString("nombres_usuarios_app",""));
+            data.setApell_pat(preferencesUsuario.getString("apell_pat",""));
+            data.setApell_mat(preferencesUsuario.getString("apell_mat",""));
+            data.setTel_movil(preferencesUsuario.getString("tel_movil",""));
+        }
+
+        if (preferencesDireccion.contains("id_dir_comercio")){
+            data.setId_dir_comercio(preferencesDireccion.getInt("id_dir_comercio",0));
+            data.setCalle(preferencesDireccion.getString("calle",""));
+            data.setNumero(preferencesDireccion.getString("numero",""));
+            data.setColonia(preferencesDireccion.getString("colonia",""));
+            data.setCp(preferencesDireccion.getInt("cp",0));
+            data.setNombre_localidad(preferencesDireccion.getString("nombre_localidad",""));
+        }
+        return data;
+    }
 
     public static Boolean guardarDatosComercio(Context context,
                                                int id_comercio,
@@ -44,16 +77,16 @@ public class PreferencesUsuario {
                                                String token){
 
         try{
-            android.content.SharedPreferences preferencesLogIn = context.getSharedPreferences("Login", Context.MODE_PRIVATE);
+            android.content.SharedPreferences preferencesLogIn = context.getSharedPreferences(PREFERENCES_LOGIN, Context.MODE_PRIVATE);
             android.content.SharedPreferences.Editor editorLogin = preferencesLogIn.edit();
 
-            android.content.SharedPreferences preferencesComercio = context.getSharedPreferences("Comercio", Context.MODE_PRIVATE);
+            android.content.SharedPreferences preferencesComercio = context.getSharedPreferences(PREFERENCES_COMERCIO, Context.MODE_PRIVATE);
             android.content.SharedPreferences.Editor editorComercio = preferencesComercio.edit();
 
-            android.content.SharedPreferences preferencesComercioDireccion = context.getSharedPreferences("ComercioDireccion", Context.MODE_PRIVATE);
+            android.content.SharedPreferences preferencesComercioDireccion = context.getSharedPreferences(PREFERENCES_COMERCIO_DIRECCION, Context.MODE_PRIVATE);
             android.content.SharedPreferences.Editor editorComercioDireccion = preferencesComercioDireccion.edit();
 
-            android.content.SharedPreferences preferencesUsuario = context.getSharedPreferences("Usuario", Context.MODE_PRIVATE);
+            android.content.SharedPreferences preferencesUsuario = context.getSharedPreferences(PREFERENCES_USUARIO, Context.MODE_PRIVATE);
             android.content.SharedPreferences.Editor editorUsuario = preferencesUsuario.edit();
 
             //Datos de LogIn

@@ -72,6 +72,31 @@ public class PreferencesReporte {
         return enviar;
     }
 
+    public static Boolean puedeEnviarReporteBool(Context context, Long fechaHoraActual){
+        Boolean enviar;
+        android.content.SharedPreferences preferences = context.getSharedPreferences("UltimoReporte", Context.MODE_PRIVATE);
+
+        if (preferences.contains("estatusReporte")){
+            Boolean estatusUltimo = preferences.getBoolean("estatusReporte", false);
+            Long fechaUltReporte = preferences.getLong("fechaUltimoReporte", 0);
+            Long diferenciaMilisegundos = fechaHoraActual - fechaUltReporte;
+
+            Log.d("MENU_ACTIVITY", estatusUltimo + " " + fechaUltReporte + " " + diferenciaMilisegundos);
+            if( estatusUltimo ){
+                if(diferenciaMilisegundos >= Constantes.DIFERENCIA_ENTRE_REPORTES){
+                    enviar = true;
+                } else {
+                    enviar = false;
+                }
+            } else {
+                enviar = true;
+            }
+        } else {
+            enviar = true;
+        }
+        return enviar;
+    }
+
     // Una vez que el reporte se haya generado es necesario
     // modificar el ultimo reporte como enviado.
     public static Boolean actualizarUltimoReporte(Context context, int reporteCreado){

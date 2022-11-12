@@ -7,7 +7,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,10 +36,10 @@ import com.c5durango.alertalsm.Clases.ModelDescripcion;
 import com.c5durango.alertalsm.Clases.ModelEmergencia;
 import com.c5durango.alertalsm.Clases.ModelMultimedia;
 import com.c5durango.alertalsm.Clases.ModelQuien;
+import com.c5durango.alertalsm.Clases.ModelReportesLocal;
 import com.c5durango.alertalsm.Clases.ModeloLogin;
 import com.c5durango.alertalsm.Clases.ModeloUbicacion;
 import com.c5durango.alertalsm.Dialogs.Dialogs;
-import com.c5durango.alertalsm.Envios.EnviarCoordenadas;
 import com.c5durango.alertalsm.Fragments.MapsFragment;
 import com.c5durango.alertalsm.Fragments.QuienFragment;
 import com.c5durango.alertalsm.Fragments.DescripcionFragment;
@@ -58,6 +57,7 @@ import com.c5durango.alertalsm.Utilidades.Notificaciones;
 import com.c5durango.alertalsm.Utilidades.PreferencesReporte;
 import com.c5durango.alertalsm.Utilidades.UriUtils;
 import com.c5durango.alertalsm.Utilidades.Utilidades;
+import com.c5durango.alertalsm.DB.DBReportes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +65,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static com.c5durango.alertalsm.Constantes.CHANNEL_ID;
@@ -86,7 +85,9 @@ public class ReporteActivity extends AppCompatActivity implements
     static boolean ENVIO_AUDIO = false;
 
     // UI
-    static ImageButton btnAtras, btnAdelante, btnEnviarReporte;
+    static ImageButton btnAtras, btnAdelante;
+    static LinearLayout btnEnviarReporte;
+    static LinearLayout btnReportePendiente;
     static ProgressBar progressBar;
     static LinearLayout linearLayoutBotones;
     static LinearLayout linearLayoutBoton;
@@ -124,9 +125,35 @@ public class ReporteActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("estatus", "oncreate");
         setContentView(R.layout.activity_reporte);
         contextoGlobal = new WeakReference<>(getApplicationContext());
 
+        // Volver a inicializar los campos del reporte // TODO: MOVER A METODO INDEPENDIENTE
+        // Model emergencia
+        modelEmergencia.setCuerpoEmergencia("Desconocido");
+        modelEmergencia.setTipoEmergencia("Desconocido");
+        modelQuien.setQuien("Yo");
+        modelDescripcion.setDescripcion("");
+        // Model ubicación
+        modeloUbicacion.setLugar("Actual");
+        modeloUbicacion.setFechaHora(Utilidades.obtenerFecha());
+        modeloUbicacion.setLatitud(0.0);
+        modeloUbicacion.setLongitud(0.0);
+        // Model multimedia
+        arrayImagenURI.clear();
+        arrayAudioURI.clear();
+        arrayVideoURI.clear();
+        listPathAudio.clear();
+        modelMultimedia.setArrayImagenURI(arrayImagenURI);
+        modelMultimedia.setArrayAudioURI(arrayAudioURI);
+        modelMultimedia.setArrayVideoURI(arrayVideoURI);
+        modelMultimedia.setListPathAudio(listPathAudio);
+        // Model login
+        modeloLogin.setId_comercio(0);
+        modeloLogin.setId_usuarios_app(0);
+        modeloLogin.setId_municipio(0);
+        modeloLogin.setClave_municipio(0);
 
         try {
             Bundle argsUbi = new Bundle();
@@ -148,6 +175,9 @@ public class ReporteActivity extends AppCompatActivity implements
         btnAtras = findViewById(R.id.btnAtras);
         btnAdelante = findViewById(R.id.btnAdelante);
         btnEnviarReporte = findViewById(R.id.btnEnviarReporte);
+        btnEnviarReporte.setVisibility(View.INVISIBLE);
+        btnReportePendiente = findViewById(R.id.btnReportePendiente);
+        btnReportePendiente.setVisibility(View.GONE);
 
         progressBar = findViewById(R.id.progressBarReporte);
         progressBar.setVisibility(View.GONE);
@@ -170,6 +200,8 @@ public class ReporteActivity extends AppCompatActivity implements
         comenzarGPS(getApplicationContext(), -1, ReporteActivity.this);
     }
 
+
+
     public void adelante(View view){
         claseActual ++;
         cambiarClase(claseActual);
@@ -178,10 +210,17 @@ public class ReporteActivity extends AppCompatActivity implements
     public void atras(View view){
         claseActual--;
         if(claseActual == 0 ) {
-            contador = 0;
-            comenzarGPS(getApplicationContext(), -1, ReporteActivity.this);
+            claseActual = 5;
         }
         cambiarClase(claseActual);
+
+    }
+
+    public void volverHome(View view){
+        // Cuando regresa a la pantalla principal
+        contador = 0;
+        cambiarClase(0);
+        // comenzarGPS(getApplicationContext(), -1, ReporteActivity.this);
     }
 
     public void ocultarLinearBotones(){
@@ -216,6 +255,23 @@ public class ReporteActivity extends AppCompatActivity implements
         cambiarClase(claseActual);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("estatus", "onresume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("estatus", "onpause");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("estatus", "onrestart");
+    }
 
     public void onFinish(View view){
         contador++;
@@ -257,26 +313,32 @@ public class ReporteActivity extends AppCompatActivity implements
     }
 
     private static void codificarImagenesURI(){
-        inhabilitarPantalla();
-        ArrayList<String> arrayListImgString = new ArrayList<>();
-        for (int i = 0; i < modelMultimedia.getArrayImagenURI().size()  ; i++){
-            Bitmap imgBitmap = Imagenes.convertirImgURIBitmap(contextoGlobal.get(), modelMultimedia.getArrayImagenURI().get(i));
-            if(imgBitmap!= null){
-                String imgString = Imagenes.convertirImgString(imgBitmap);
-                if(imgString.length() > 3){
-                    arrayListImgString.add(imgString);
+        try {
+            inhabilitarPantalla();
+            ArrayList<String> arrayListImgString = new ArrayList<>();
+            for (int i = 0; i < modelMultimedia.getArrayImagenURI().size()  ; i++){
+                Log.d(TAG, modelMultimedia.getArrayImagenURI().get(i).toString());
+                Bitmap imgBitmap = Imagenes.convertirImgURIBitmap(contextoGlobal.get(), modelMultimedia.getArrayImagenURI().get(i));
+
+                if(imgBitmap!= null){
+                    String imgString = Imagenes.convertirImgString(imgBitmap);
+                    if(imgString.length() > 3){
+                        arrayListImgString.add(imgString);
+                    } else {
+                        Toast.makeText(contextoGlobal.get(), "Ocurrió un error al codificar imagen", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Toast.makeText(contextoGlobal.get(), "Ocurrió un error al codificar imagen", Toast.LENGTH_LONG).show();
                 }
-            } else {
-                Toast.makeText(contextoGlobal.get(), "Ocurrió un error al codificar imagen", Toast.LENGTH_LONG).show();
             }
+            // Enviar imagenes ya codificadas
+            for (int i = 0; i <arrayListImgString.size()  ; i++){
+                EnviarImagenes.enviarImagenFrontal(contextoGlobal.get(), arrayListImgString.get(i), Utilidades.obtenerFechaAleatoria(), REPORTE_CREADO);
+            }
+            habilitarPantalla();
+        } catch (Exception e){
+            Log.e(TAG, "ERROR AL CODIFICAR IMAGENES: " + e.getMessage());
         }
-        // Enviar imagenes ya codificadas
-        for (int i = 0; i <arrayListImgString.size()  ; i++){
-            EnviarImagenes.enviarImagenFrontal(contextoGlobal.get(), arrayListImgString.get(i), Utilidades.obtenerFechaAleatoria(), REPORTE_CREADO);
-        }
-        habilitarPantalla();
     }
 
     private static void codificarAudioURI(){
@@ -620,7 +682,7 @@ public class ReporteActivity extends AppCompatActivity implements
         modelMultimedia.setListPathAudio(listPathAudios);
 
         Log.d(TAG, "MODEL MULTIMEDIA IMAGEN: " + modelMultimedia.getArrayImagenURI().size());
-        Log.d(TAG, "MODEL MULTIMEDIA AUDIO: " + modelMultimedia.getArrayAudioURI().size());
+        //Log.d(TAG, modelMultimedia.getArrayImagenURI().get(0).toString());
         Log.d(TAG, "MODEL MULTIMEDIA VIDEO: " + modelMultimedia.getArrayVideoURI().size());
         Log.d(TAG, "MODEL MULTIMEDIA PATH: " + modelMultimedia.getListPathAudio().size());
 
@@ -684,15 +746,19 @@ public class ReporteActivity extends AppCompatActivity implements
 
         JsonObjectRequest requestAlerta;
         String URL = Constantes.URL + "/alerta/notificacion/coordenadas/";
+        String fechaHora = Utilidades.obtenerFecha();
         //if(modeloUbicacion.getLugar() == "Actual" || modeloUbicacion.getLugar() == "Otra")
         //    URL = URL + "coordenadas/";
+
+        // Desactivar botón para no generar un nuevo reporte
+        btnEnviarReporte.setVisibility(View.INVISIBLE);
 
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("idComercio", modeloLogin.getId_comercio());
             jsonObject.put("idUsuario", modeloLogin.getId_usuarios_app());
-            jsonObject.put("fecha" , Utilidades.obtenerFecha());
+            jsonObject.put("fecha" , fechaHora);
             jsonObject.put("cuerpo", modelEmergencia.getCuerpoEmergencia());
             jsonObject.put("tipoIncidUser", modelEmergencia.getTipoEmergencia());
             jsonObject.put("descripEmergUser", modelDescripcion.getDescripcion());
@@ -718,16 +784,15 @@ public class ReporteActivity extends AppCompatActivity implements
                             Boolean ok = response.getBoolean("ok");
 
                             if(ok){
-                                // Desactivar botón para nuevo reporte
-                                btnEnviarReporte.setVisibility(View.INVISIBLE);
-
                                 // GUARDAR INFORMACION DEL ULTIMO REPORTE GENERADO
                                 REPORTE_CREADO = response.getInt("reporteCreado");
+                                guardarInformacionSQLite(context, fechaHora);
+
                                 Notificaciones notificaciones = new Notificaciones();
-                                notificaciones.crearNotificacionNormal(context, CHANNEL_ID,  R.drawable.ic_color_success, "¡Alerta enviada!", "Se generó alerta con folio #" + REPORTE_CREADO, ID_SERVICIO_WIDGET_GENERAR_ALERTA);
+                                notificaciones.crearNotificacionNormal(context, CHANNEL_ID,  R.drawable.ic_color_success, "¡Reporte enviado!", "Se generó reporte con folio #" + REPORTE_CREADO, ID_SERVICIO_WIDGET_GENERAR_ALERTA);
 
                                 //mostrarResultadoVista();
-                                //Toast.makeText(getApplicationContext(), "¡Éxito al generar alerta #" + reporteCreado + "\nEnviando multimedia..", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(), "¡Éxito al generar reporte #" + reporteCreado + "\nEnviando multimedia..", Toast.LENGTH_SHORT).show();
                                 //mostrarResultadoVista(R.drawable.ic_color_success,);
 
                                 PreferencesReporte.actualizarUltimoReporte(context, REPORTE_CREADO);
@@ -757,10 +822,17 @@ public class ReporteActivity extends AppCompatActivity implements
                                 }
 
                                 eliminarEscuchadorGPS(context);
+
+                                // Volver a la pantalla de inicio y notificar éxito
+                                Toast.makeText(context,"Se generó reporte con folio #" + REPORTE_CREADO, Toast.LENGTH_LONG).show();
+                                /*Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(i);*/
+
+                                finish();
                             } else {
                                 Toast.makeText(context, response.getString("message"), Toast.LENGTH_SHORT).show();
                                 Notificaciones notificaciones = new Notificaciones();
-                                notificaciones.crearNotificacionNormal(context, CHANNEL_ID,  R.drawable.ic_color_error, "¡No se pudo generar la alerta de pánico!", response.getString("message"), ID_SERVICIO_WIDGET_GENERAR_ALERTA);
+                                notificaciones.crearNotificacionNormal(context, CHANNEL_ID,  R.drawable.ic_color_error, "¡No se pudo generar el reporte!", response.getString("message"), ID_SERVICIO_WIDGET_GENERAR_ALERTA);
                                 Dialogs.cerrarVentanaMensaje();
                                 btnPresionado = false;
                             }
@@ -776,8 +848,14 @@ public class ReporteActivity extends AppCompatActivity implements
             public void onErrorResponse(VolleyError error) {
                 String errorResp = "Error #1: " + Utilidades.tipoErrorVolley(error);
                 Notificaciones notificaciones = new Notificaciones();
-                notificaciones.crearNotificacionNormal(context, CHANNEL_ID,  R.drawable.ic_color_error, "¡No se pudo generar la alerta de pánico!", errorResp, ID_SERVICIO_WIDGET_GENERAR_ALERTA);
+                notificaciones.crearNotificacionNormal(context, CHANNEL_ID,  R.drawable.ic_color_error, "¡No se pudo generar el reporte!", errorResp, ID_SERVICIO_WIDGET_GENERAR_ALERTA);
                 Dialogs.cerrarVentanaMensaje();
+
+                // Reiniciar campos para permitir generar otra alerta
+                btnPresionado = false;
+                contador = 0;
+                btnEnviarReporte.setVisibility(View.VISIBLE);
+
                 requestQueue.stop();
             }
         }) {
@@ -806,6 +884,7 @@ public class ReporteActivity extends AppCompatActivity implements
                 try {
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
+                    finish();
                 } catch (Exception e){
                     Log.d("MENU_ACTIVITY", e.getMessage());
                 }
@@ -822,6 +901,9 @@ public class ReporteActivity extends AppCompatActivity implements
                     UbicacionFragment ubicacionFragment = new UbicacionFragment();
                     ubicacionFragment.setArguments(argsUbi);
 
+                    btnEnviarReporte.setVisibility(View.INVISIBLE);
+                    btnReportePendiente.setVisibility(View.GONE);
+
                     transaction.replace(R.id.frContenedor, ubicacionFragment);
                     transaction.commit();
                 } catch (Exception e){
@@ -836,6 +918,9 @@ public class ReporteActivity extends AppCompatActivity implements
 
                     EmergFragment emergFragment = new EmergFragment();
                     emergFragment.setArguments(argsEmerg);
+
+                    btnEnviarReporte.setVisibility(View.INVISIBLE);
+                    btnReportePendiente.setVisibility(View.GONE);
 
                     transaction.replace(R.id.frContenedor, emergFragment);
                     transaction.commit();
@@ -852,6 +937,9 @@ public class ReporteActivity extends AppCompatActivity implements
                     QuienFragment quienFragment = new QuienFragment();
                     quienFragment.setArguments(argsQuien);
 
+                    btnEnviarReporte.setVisibility(View.INVISIBLE);
+                    btnReportePendiente.setVisibility(View.GONE);
+
                     transaction.replace(R.id.frContenedor, quienFragment);
                     transaction.commit();
                 } catch (Exception e){
@@ -865,6 +953,9 @@ public class ReporteActivity extends AppCompatActivity implements
 
                     DescripcionFragment descripcionFragment = new DescripcionFragment();
                     descripcionFragment.setArguments(argsDesc);
+
+                    btnEnviarReporte.setVisibility(View.INVISIBLE);
+                    btnReportePendiente.setVisibility(View.GONE);
 
                     transaction.replace(R.id.frContenedor, descripcionFragment);
                     transaction.commit();
@@ -884,14 +975,22 @@ public class ReporteActivity extends AppCompatActivity implements
                     MultimediaFragment multimediaFragment = new MultimediaFragment();
                     multimediaFragment.setArguments(argsMult);
 
+                    // Hacer visible solo si ya pasó el tiempo limite
+                    if(PreferencesReporte.puedeEnviarReporteBool(getApplicationContext(), System.currentTimeMillis())){
+                        btnEnviarReporte.setVisibility(View.VISIBLE);
+                        btnReportePendiente.setVisibility(View.GONE);
+                    } else {
+                        // Mostrar para botonazo
+                        btnEnviarReporte.setVisibility(View.GONE);
+                        btnReportePendiente.setVisibility(View.VISIBLE);
+                    }
+
                     transaction.replace(R.id.frContenedor, multimediaFragment);
                     transaction.commit();
                 } catch (Exception e){
                     Log.d("MULTIMEDIA", e.getMessage());
                 }
-
                 break;
-
 
             default:
                 try {
@@ -904,6 +1003,9 @@ public class ReporteActivity extends AppCompatActivity implements
 
                     UbicacionFragment ubicacionFragment = new UbicacionFragment();
                     ubicacionFragment.setArguments(argsUbi);
+
+                    btnEnviarReporte.setVisibility(View.INVISIBLE);
+                    btnReportePendiente.setVisibility(View.GONE);
 
                     transaction.replace(R.id.frContenedor, ubicacionFragment);
                     transaction.commit();
@@ -927,8 +1029,39 @@ public class ReporteActivity extends AppCompatActivity implements
 
     @Override
     protected void onDestroy() {
+        Log.d("estatus", "ondestroy");
         super.onDestroy();
         eliminarEscuchadorGPS(getApplicationContext());
+    }
+
+    private void guardarInformacionSQLite(Context context, String fechaHora){
+        try {
+            // Guardar la información también en SQLite
+            ModelReportesLocal model = new ModelReportesLocal();
+            model.setId_reporte(REPORTE_CREADO);
+            model.setFecha_hora(fechaHora);
+            model.setLatitud(modeloUbicacion.getLatitud());
+            model.setLongitud(modeloUbicacion.getLongitud());
+            model.setLugar(modeloUbicacion.getLugar());
+            model.setIncidente(modelEmergencia.getCuerpoEmergencia());
+            model.setSubtipo(modelEmergencia.getTipoEmergencia());
+            model.setVictimas(modelQuien.getQuien());
+            model.setDescripcion(modelDescripcion.getDescripcion());
+            model.setImagenes(modelMultimedia.getArrayImagenURI().size());
+            model.setAudio((modelMultimedia.getArrayAudioURI().size() + modelMultimedia.getListPathAudio().size()));
+            model.setVideo(modelMultimedia.getArrayVideoURI().size());
+            model.setEstatus("Enviado");
+
+            DBReportes dbReportes = new DBReportes(context);
+            long id = dbReportes.insertarReporte(model);
+            if (id > 0) {
+                Log.d(TAG, "REGISTRO GUARDADO CON ÉXITO");
+            } else {
+                Log.d(TAG, "ERROR AL GUARDAR REPORTE");
+            }
+        } catch (Exception e){
+            Log.e(TAG, e.getMessage());
+        }
     }
 
     public static class ManejoFotografias{

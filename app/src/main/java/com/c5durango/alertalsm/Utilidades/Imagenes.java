@@ -23,7 +23,11 @@ public class Imagenes {
 
         if(Build.VERSION.SDK_INT < 28){
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), uri);
+                if(uri == null){
+                    return null;
+                } else {
+                    bitmap = MediaStore.Images.Media.getBitmap(context.getApplicationContext().getContentResolver(), uri);
+                }
                 return bitmap;
             } catch (FileNotFoundException notf){
                 Log.d(TAG, "Archivo no encontrado URI -> Bitmap (API < 28)" );
