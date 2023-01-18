@@ -34,6 +34,10 @@ import com.c5durango.alertalsm.Utilidades.Utilidades;
 
 public class ConfiguracionFragment extends Fragment implements View.OnClickListener {
 
+    /*
+    * Se encarga de crear y destruir el servicio que mantiene la notificación persistente
+    * necesaria para escuchar cuando se presiona 3 veces seguidas el botón de bloqueo.
+    * */
 
     private Switch switchServicioActivo;
     private View root;
@@ -128,7 +132,10 @@ public class ConfiguracionFragment extends Fragment implements View.OnClickListe
             conf_nueva = true;
             create = true;
             isActive = Utilidades.isMyServiceRunning(getContext(), NotificacionService.class);
+
+            // NotificacionService --> Clase que escucha cuando se presiona 3 veces el botón de bloqueo.
             switchServicioActivo.setChecked(Utilidades.isMyServiceRunning(getContext(), NotificacionService.class));
+            // Guardar que esta activado el servicio.
             actualizarPreferenciasNotificacion(isActive);
         } catch (Exception io){
             Toast.makeText(getContext(), "¡Error al actualizar los datos locales!", Toast.LENGTH_LONG).show();
@@ -136,7 +143,6 @@ public class ConfiguracionFragment extends Fragment implements View.OnClickListe
     }
 
     private void detenerServicioPersistente(){
-        // Si no sirve fragment mover class a activity
         create = false;
         Intent notificationIntent = new Intent(getContext(), NotificacionService.class);
         getContext().stopService(notificationIntent);

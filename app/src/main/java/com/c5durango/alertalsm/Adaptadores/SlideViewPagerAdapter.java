@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +19,17 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.c5durango.alertalsm.Constantes;
-import com.c5durango.alertalsm.LoginActivity;
 import com.c5durango.alertalsm.MainActivity;
 import com.c5durango.alertalsm.R;
 import com.c5durango.alertalsm.SlideActivity;
 
 public class SlideViewPagerAdapter extends PagerAdapter {
+
+    /*
+    * Clase para el adaptador que se muestra al inicio con la información
+    * de para que es necesario cada permiso.
+    *
+    * */
 
     Context ctx;
     Activity act;

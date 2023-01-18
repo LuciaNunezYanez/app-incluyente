@@ -2,13 +2,11 @@ package com.c5durango.alertalsm.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +19,9 @@ import com.c5durango.alertalsm.R;
 
 public class QuienFragment extends Fragment implements CardView.OnClickListener{
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    /* Se toma información acerca de la persona que necesita el apoyo
+     * y se envia al ReporteActivity para que posteriormente envie el reporte completo.
+     * */
 
     private ModelQuien modelQuien;
     private CardView cardYo;
@@ -42,14 +41,6 @@ public class QuienFragment extends Fragment implements CardView.OnClickListener{
     View view;
 
     public QuienFragment() {
-    }
-
-
-    // TODO: Rename and change types and number of parameters
-    public static QuienFragment newInstance(String param1, String param2) {
-        QuienFragment fragment = new QuienFragment();
-
-        return fragment;
     }
 
     @Override

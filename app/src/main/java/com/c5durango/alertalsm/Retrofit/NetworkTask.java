@@ -1,10 +1,6 @@
 package com.c5durango.alertalsm.Retrofit;
 
-import android.app.Activity;
-import android.util.Log;
-
 import com.c5durango.alertalsm.Constantes;
-import com.c5durango.alertalsm.Servicios.VideoService;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
@@ -12,7 +8,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -23,20 +18,16 @@ public class NetworkTask {
     ApiCalls apiCalls;
     String TAG = "VIDEO_SERVICE";
 
-    /*Build Retrofit Here*/
     public NetworkTask() {
-
         try {
-            Log.d(TAG, "AQUI");
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(Constantes.URL+"/")
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(Constantes.URL+"/")
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-
-        apiCalls = retrofit.create(ApiCalls.class);
+            apiCalls = retrofit.create(ApiCalls.class);
         } catch (Exception e){
             e.printStackTrace();
         }

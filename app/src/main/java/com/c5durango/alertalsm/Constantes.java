@@ -2,12 +2,7 @@ package com.c5durango.alertalsm;
 
 public class Constantes {
 
-    /*
-    * Te pido una disculpa si te tocó modificar este código
-    * ya que a veces ni yo misma le entiendo :(
-    * Si tienes dudas mandame un correo y te apoyo
-    * lucia.nunez0828@gmail.com
-    */
+
 
     // CONSTANTES GENERALES
     public static final String CHANNEL_ID = "911_INCLUYENTE_DGO";

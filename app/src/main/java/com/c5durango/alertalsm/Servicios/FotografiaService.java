@@ -33,7 +33,10 @@ import java.io.File;
 
 public class FotografiaService extends HiddenCameraService {
 
-    StringRequest request;
+    /*
+    * Toma una fotografía en segundo plano y la retorna al padre.
+    * */
+
     String tipoCamara;
     Bitmap imagenBitmap;
     int reporteCreado;

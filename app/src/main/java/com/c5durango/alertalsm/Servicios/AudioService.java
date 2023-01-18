@@ -1,22 +1,17 @@
 package com.c5durango.alertalsm.Servicios;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -46,6 +41,11 @@ import static com.c5durango.alertalsm.Constantes.EXTENSION_AUDIO;
 import static com.c5durango.alertalsm.Constantes.ID_SERVICIO_AUDIO;
 
 public class AudioService extends Service  {
+
+    /*
+    * Se encarga de grabar varios audios en segundo plano,
+    * guardarlos, enviarlos y retornar el resultado al padre.
+    * */
 
     public static final int RequestPermissionCode = 1;
     String AudioSavePathInDevice = null;
@@ -84,10 +84,11 @@ public class AudioService extends Service  {
             //padre = intent.getStringExtra("padre");
 
 
+            // soloUno es para grabar un audio solamente
             if(intent.getExtras().containsKey("soloUno"))
                 soloUno = true;
 
-            // Crear notificación para avisar que se está enviando el video
+            // Crear notificación para avisar que se está enviando el audio
             crearNotificacionPersistente(
                     Notificaciones.crearNotificacionPersistente(
                             getApplicationContext(),

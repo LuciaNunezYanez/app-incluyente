@@ -28,6 +28,11 @@ import java.io.UnsupportedEncodingException;
 
 public class Config {
 
+    /*
+    * Se encarga de obtener el token del dispositivo y enviarlo al servidor
+    * para posteriormente poder recibir notificaciones con Firebase.
+    * */
+
     static String TAG = "Firebase";
 
     public static void getTokenInstance(final Context context, final int id_usuario){
@@ -113,6 +118,7 @@ public class Config {
                         Log.d(TAG, response.toString());
 
                         // Si se envió tod correcto suscribirse a un grupo
+                        // para solo recibir notificaciones de su grupo correspondiente.
                         suscribirTema(context, "GRUPO_ALERTA_LSM");
                         requestQueue.stop();
                     }

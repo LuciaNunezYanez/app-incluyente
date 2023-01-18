@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.media.Image;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,7 +41,13 @@ import java.util.Objects;
 import static android.app.Activity.RESULT_OK;
 
 
+
 public class MultimediaFragment extends Fragment implements View.OnClickListener {
+
+    /* Se toma la multimedia añadida (fotos, audio y video)
+     * y se envia al ReporteActivity para que posteriormente envie el reporte completo.
+     * */
+
     static String TAG = "MULTIMEDIA";
 
     // UI
@@ -77,7 +81,6 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
     ImageButton btn3;
     View multimediaView;
 
-    // private NetworkTask networkTask;
 
 
     // MEDIA RECORDER
@@ -133,13 +136,6 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
             }
 
         }
-
-        /*try {
-            networkTask = new NetworkTask(getActivity());
-        } catch (Exception e){
-            e.printStackTrace();
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }*/
     }
 
     @Override
@@ -574,15 +570,6 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
      *                                 VIDEO                                 *
      *                                                                       *
      ************************************************************************/
-    /*public void iniciarServicioVideo(String path){
-
-        Intent ivideo = new Intent(getContext(), VideoService.class);
-        ivideo.putExtra("path", path);
-        ivideo.putExtra("fecha", "FECHA");
-        ivideo.putExtra("id_reporte", "20");
-        getActivity().startService(ivideo);
-    }*/
-
 
     public void grabarVideo() {
         Intent intentVideo = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -673,8 +660,6 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
      *                            EVENTOS  BOTONES                           *
      *                                                                       *
      ************************************************************************/
-
-    // if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
 
     @Override
     public void onClick(View v) {
@@ -834,11 +819,6 @@ public class MultimediaFragment extends Fragment implements View.OnClickListener
     public interface DataListener{
         void sendMultimedia(ArrayList<Uri> arrayListImagenURI, ArrayList<Uri> arrayListAudioURI, ArrayList<Uri> arrayListVideoURI, ArrayList<String> listPathAudios );
     }
-
-
-
-
-
 
 
     /* **********************************************************************

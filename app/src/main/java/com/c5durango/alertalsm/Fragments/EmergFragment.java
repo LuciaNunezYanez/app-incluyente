@@ -1,10 +1,7 @@
 package com.c5durango.alertalsm.Fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -16,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,6 +26,10 @@ import java.util.List;
 public class EmergFragment extends Fragment implements CardView.OnClickListener{
 
 
+    /* Se toma la información del tipo de emergencia solicitada
+    * y se enviar al ReporteActivity para que posteriormente envie el reporte completo.
+    * */
+
     public CardView cardBombero, cardMedico, cardSeguridad, cardOtro;
     private static String TAG = "EmergFragment";
 
@@ -37,8 +37,6 @@ public class EmergFragment extends Fragment implements CardView.OnClickListener{
     ModelEmergencia modelEmergencia;
     private DataListener callback;
 
-
-    static ListView listViewTipoEmergencia;
     Spinner spinerTipoEmergencia;
     List<String> listMedico = Arrays.asList(
             "DESCONOCIDO",
@@ -137,14 +135,6 @@ public class EmergFragment extends Fragment implements CardView.OnClickListener{
 
     public EmergFragment() {
         // Required empty public constructor
-    }
-
-
-
-    // TODO: Rename and change types and number of parameters
-    public static EmergFragment newInstance(String param1, String param2) {
-        EmergFragment fragment = new EmergFragment();
-        return fragment;
     }
 
     @Override

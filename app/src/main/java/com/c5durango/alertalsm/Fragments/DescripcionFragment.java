@@ -1,7 +1,6 @@
 package com.c5durango.alertalsm.Fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,10 +19,11 @@ import com.c5durango.alertalsm.Clases.ModelDescripcion;
 import com.c5durango.alertalsm.R;
 
 public class DescripcionFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
+    /*
+    * Para la pantalla donde el usuario ingresa la descripción
+    * de lo que esta pasando al generar el reporte.
+    * */
 
     ModelDescripcion modelDescripcion = new ModelDescripcion("");
     private EditText txtDescripcion;
@@ -35,17 +35,6 @@ public class DescripcionFragment extends Fragment {
 
     public DescripcionFragment() {
         // Required empty public constructor
-    }
-
-
-    // TODO: Rename and change types and number of parameters
-    public static DescripcionFragment newInstance(String param1, String param2) {
-        DescripcionFragment fragment = new DescripcionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -82,7 +71,9 @@ public class DescripcionFragment extends Fragment {
                 // SETEAR LONGITUD ACTUAL
                 LONGITUD_ACTUAL = modelDescripcion.getDescripcion().length();
                 txtLongitud.setText(LONGITUD_ACTUAL +"/" + MAX_LONGITUD);
-                // ENVIAR TEXTO REPORTE ACTIVITY
+
+                // ENVIAR LA INFORMACIÓN AL REPORTE ACTIVITY
+                // El reporteActivity recopila la información de todos los fragmentes para enviarla.
                 callback.sendDataDescripcion(modelDescripcion.getDescripcion());
             }
 

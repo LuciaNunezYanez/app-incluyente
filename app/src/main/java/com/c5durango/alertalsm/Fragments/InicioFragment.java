@@ -1,14 +1,11 @@
 package com.c5durango.alertalsm.Fragments;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -16,7 +13,6 @@ import androidx.fragment.app.Fragment;
 
 import com.c5durango.alertalsm.R;
 import com.c5durango.alertalsm.Utilidades.PreferencesReporte;
-import com.c5durango.alertalsm.DB.DBHelper;
 
 public class InicioFragment extends Fragment  implements View.OnClickListener {
 

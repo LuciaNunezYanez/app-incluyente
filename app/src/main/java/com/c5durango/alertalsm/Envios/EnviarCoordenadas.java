@@ -22,6 +22,11 @@ import java.io.UnsupportedEncodingException;
 
 public class EnviarCoordenadas {
 
+    /*
+    * Se encarga de UNICAMENTE enviar las coordenadas al servidor.
+    * (No se utiliza)
+    **/
+
     private static String TAG = "Coordenadas";
 
     public static Boolean enviarCoordenadas(final Context context, Double latitud, Double longitud, String fecha, String lugar, int reporteCreado){

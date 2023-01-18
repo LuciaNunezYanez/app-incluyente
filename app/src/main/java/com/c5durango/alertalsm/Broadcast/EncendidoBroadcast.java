@@ -11,6 +11,11 @@ import com.c5durango.alertalsm.Servicios.NotificacionService;
 
 public class EncendidoBroadcast extends BroadcastReceiver {
 
+    /*
+    * En caso de que se tenga activo el servicio que esta al pendiente de escuchar los 3 botonazos
+    * y el teléfono se deba reiniciar es necesario volver a activar el servicio automaticamente.
+    * */
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
@@ -19,6 +24,7 @@ public class EncendidoBroadcast extends BroadcastReceiver {
         if(action != null) {
             if (action.equals(Intent.ACTION_BOOT_COMPLETED) ) {
                 Log.d(TAG, "ACTION_BOOT_COMPLETED");
+
                 // Validar si el servicio estaba activo la ultima vez
                 Boolean isActive = false;
                 SharedPreferences preferences = context.getSharedPreferences("NotificacionPersistente", Context.MODE_PRIVATE);

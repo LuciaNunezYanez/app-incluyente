@@ -8,6 +8,10 @@ import androidx.annotation.Nullable;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    /*
+    * Se encarga de crear la estructura de la base de datos interna.
+    * */
+
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "incluyente.db";
     public static final String TABLE_REPORTES = "t_reportes";
@@ -19,6 +23,8 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         // Crear las tablas
+        
+        // En esta tabla se guardan todos los reportes generados
         sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_REPORTES +
                 " (" +
                     "id_reporte INTEGER," +

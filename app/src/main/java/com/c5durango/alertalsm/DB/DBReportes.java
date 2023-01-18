@@ -14,6 +14,12 @@ import java.util.ArrayList;
 
 public class DBReportes extends DBHelper {
 
+    /*
+    * Aqui se encuentran los métodos relacionados a la tabla de reportes
+    * como insertar y mostrar.
+    * */
+
+
     Context context;
     private String TAG = "DBREPORTES";
 

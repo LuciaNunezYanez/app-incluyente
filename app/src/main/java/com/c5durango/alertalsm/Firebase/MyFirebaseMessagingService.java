@@ -13,14 +13,17 @@ import static com.c5durango.alertalsm.Constantes.CHANNEL_ID;
 import static com.c5durango.alertalsm.Constantes.ID_SERVICIO_NOTIFICACION_REPORTE_RECIBIDO;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
     private static final String TAG = "Firebase";
+
+    /* Se encarga de mostrar las notificaciones cuando se reciben por medio de Firebase. */
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
 
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        // Check if message contains a data payload.
+        // Validar si el mensaje contiene payload
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 

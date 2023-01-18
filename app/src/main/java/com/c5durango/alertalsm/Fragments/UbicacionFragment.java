@@ -1,33 +1,26 @@
 package com.c5durango.alertalsm.Fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.c5durango.alertalsm.Clases.ModeloUbicacion;
 import com.c5durango.alertalsm.Constantes;
-import com.c5durango.alertalsm.Dialogs.Dialogs;
 import com.c5durango.alertalsm.R;
-import com.c5durango.alertalsm.Servicios.GPSService;
 import com.c5durango.alertalsm.Utilidades.Utilidades;
-
-import java.util.ArrayList;
 
 
 public class UbicacionFragment extends Fragment implements View.OnClickListener{
+
+    /* Se toma la ubicación y se envia al ReporteActivity para que posteriormente envie el reporte completo. */
 
     private DataListener callback;
 

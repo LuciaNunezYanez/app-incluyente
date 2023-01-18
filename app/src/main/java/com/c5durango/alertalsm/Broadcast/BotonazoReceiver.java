@@ -3,12 +3,17 @@ package com.c5durango.alertalsm.Broadcast;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
 public class BotonazoReceiver extends BroadcastReceiver {
+
+    /*
+    * Es la clase que se encarga de detectar cuando se ha presionado
+    * 3 veces seguidas el botón de bloqueo en un periodo corto.
+    * De ser así se genera alerta.
+    * */
 
     Context context;
     private long botonazos[] = {0, 0, 0}; // A B C
@@ -45,6 +50,7 @@ public class BotonazoReceiver extends BroadcastReceiver {
     }
 
 
+    // Se responde al servicio que comience a generar una nueva alerta
     private void responerAServicio() {
         Intent intent = new Intent("botonActivado");
         intent.putExtra("Activado", true);

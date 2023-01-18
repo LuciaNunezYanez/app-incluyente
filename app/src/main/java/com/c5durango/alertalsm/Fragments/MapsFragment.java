@@ -1,14 +1,11 @@
 package com.c5durango.alertalsm.Fragments;
 
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -30,6 +27,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
+
+    /* Se toma la ubicación y se envia al ReporteActivity para que posteriormente envie el reporte completo. */
 
     private View rootView;
     private GoogleMap mMap;

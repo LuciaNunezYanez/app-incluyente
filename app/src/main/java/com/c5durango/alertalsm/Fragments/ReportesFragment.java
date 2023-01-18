@@ -20,6 +20,10 @@ import java.util.ArrayList;
 
 public class ReportesFragment extends Fragment {
 
+    /*
+    * Infla el Recycler view donde se muestran los reportes generados
+    * */
+
     RecyclerView recyclerReportes;
     ArrayList<ModelReportesLocal> arrayReportes;
 

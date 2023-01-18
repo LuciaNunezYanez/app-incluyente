@@ -3,7 +3,6 @@ package com.c5durango.alertalsm.Adaptadores;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,11 @@ import com.c5durango.alertalsm.R;
 import java.util.ArrayList;
 
 public class ListaReportesAdapter extends RecyclerView.Adapter<ListaReportesAdapter.ReporteViewHolder> {
+
+    /*
+    * Adaptador para mostrar la lista de los reportes generados
+    *
+    */
 
     ArrayList<ModelReportesLocal> listaReportes;
     private String TAG = "ADAPTER_REPORTES";
